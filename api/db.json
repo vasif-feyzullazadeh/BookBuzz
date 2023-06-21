@@ -1,0 +1,42 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Vasif",
+      "job": "Developer",
+      "images": ["image1"]
+    },
+    {
+      "id": 2,
+      "name": "Akber",
+      "job": "Developer",
+      "images": ["image1"]
+    },
+    {
+      "id": 3,
+      "name": "Rauf",
+      "job": "Developer",
+      "images": ["image1"]
+    }
+  ],
+  "posts": [
+    {
+      "id": 1,
+      "name": "Vasif",
+      "job": "Developer",
+      "images": ["image1"]
+    },
+    {
+      "id": 2,
+      "name": "Akber",
+      "job": "Developer",
+      "images": ["image1"]
+    },
+    {
+      "id": 3,
+      "name": "Rauf",
+      "job": "Developer",
+      "images": ["image1"]
+    }
+  ]
+}
