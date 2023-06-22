@@ -1,3 +1,3 @@
-const base_URL = process.env.NEXT_PUBLIC_API_SITE_URL as string;
+const BASE_URL = "http://bookbuzz.cronhex.com/api/v1";
 
-export { base_URL };
+export { BASE_URL };

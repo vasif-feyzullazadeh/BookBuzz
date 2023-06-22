@@ -1,37 +1,57 @@
-"use client";
-
+import Link from "next/link";
 import styled from "styled-components";
 
 interface Props {
   buttonName: string;
   width: string;
   align: string;
+  borderRadius: string;
   className?: string;
+  url?: string;
   onClick?: any;
 }
 
-const Button = ({ buttonName, width, align, className, onClick }: Props) => {
+const Button = ({
+  buttonName,
+  width,
+  align,
+  borderRadius,
+  className,
+  url,
+  onClick,
+}: Props) => {
   return (
     <ButtonBox
       align={align}
       width={width}
       className={className}
-      onClick={onClick}
+      borderRadius={borderRadius}
     >
-      <button className="button">{buttonName}</button>
+      {url ? (
+        <Link href={url}>{buttonName}</Link>
+      ) : (
+        <button className="button" onClick={onClick}>
+          {buttonName}
+        </button>
+      )}
     </ButtonBox>
   );
 };
 
 export default Button;
 
-const ButtonBox = styled.div<{ align: string; width: string }>`
+const ButtonBox = styled.div<{
+  align: string;
+  width: string;
+  borderRadius: string;
+}>`
   display: flex;
   justify-content: ${({ align }) => align};
-  .button {
-    background: #62bac6;
+  .button,
+  a {
+    background: #000;
     box-shadow: 2px 10px 35px rgba(45, 73, 226, 0.1);
-    border-radius: 4px;
+    border-radius: ${({ borderRadius }) => borderRadius};
     height: 45px;
     display: flex;
     align-items: center;
@@ -47,7 +67,7 @@ const ButtonBox = styled.div<{ align: string; width: string }>`
     width: ${({ width }) => width};
 
     &:hover {
-      background: #4b99a3;
+      background: #414141;
     }
   }
 `;

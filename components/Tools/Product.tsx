@@ -1,39 +1,28 @@
 import styled from "styled-components";
 import Link from "next/link";
+import { AiFillHeart } from "react-icons/ai";
 import { GenericProduct, IProductDetails } from "@/types/globalTypes";
 
 const Product = ({ products }: IProductDetails<GenericProduct>) => {
+  const { id, thumbnail, title, description, price } = products;
   return (
     <Column>
-      <Link href={`/product/${products.id}`}>
+      <Link href={`/product/${id}`} className="card_link">
         <ProdcutDetailBox>
           <ImageBox>
-            <img src={products.thumbnail} alt={products.title} />
+            <img src={thumbnail} alt={title} />
           </ImageBox>
-          <Title>{products.title}</Title>
-
-          <Desc>{products.description}</Desc>
-          <CostBox>
-            <b>Price:</b>
-            <Price>${products.price}</Price>
-            <DiscountPercentage>
-              {products.discountPercentage} % OFF
-            </DiscountPercentage>
-          </CostBox>
-
-          <RatingStockBox>
-            <Rating>
-              Rating: <span>{products.rating}</span>
-            </Rating>
-            <Stock>
-              Stock: <span>{products.stock}</span>
-            </Stock>
-          </RatingStockBox>
-
-          <Brand>{products.brand}</Brand>
-          <Category>
-            Category: <span>{products.category}</span>
-          </Category>
+          <Title>{title}</Title>
+          <Desc>{description}</Desc>
+          <Row>
+            <CostBox>
+              <Price>${price}</Price>
+            </CostBox>
+            <Like>
+              <AiFillHeart color={"#000"} size={16} className="heart_icon" />
+              <LikeCount>10</LikeCount>
+            </Like>
+          </Row>
         </ProdcutDetailBox>
       </Link>
     </Column>
@@ -46,6 +35,15 @@ const Column = styled.div`
   padding: 0 15px;
   width: calc(100% / 4);
   margin-bottom: 30px;
+
+  .card_link {
+    display: block;
+  }
+`;
+
+const Row = styled.div`
+  display: flex;
+  justify-content: space-between;
 `;
 
 const ImageBox = styled.div`
@@ -74,95 +72,42 @@ const Desc = styled.p`
   word-break: break-word;
 `;
 
-const CostBox = styled.div`
-  display: flex;
-
-  b {
-    font-size: 12px;
-    color: #333;
-    margin-right: 10px;
-  }
-`;
+const CostBox = styled.div``;
 
 const Price = styled.span`
   font-size: 18px;
-  font-weight: 500;
-  line-height: 30px;
-  color: #15ac3b;
+  font-weight: 700;
+  line-height: 24px;
+  color: #000;
   display: block;
-`;
-
-const DiscountPercentage = styled.span`
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 30px;
-  color: #d62828;
-  margin-left: 10px;
-`;
-
-const Rating = styled.span`
-  font-size: 12px;
-  font-weight: 500;
-  line-height: 30px;
-  color: #2e2e2e;
-  display: block;
-
-  span {
-    font-size: 14px;
-  }
-`;
-
-const RatingStockBox = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 20px;
-`;
-
-const Stock = styled.span`
-  font-size: 12px;
-  font-weight: 500;
-  line-height: 30px;
-  color: #2e2e2e;
-
-  span {
-    font-size: 14px;
-  }
-`;
-
-const Brand = styled.span`
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 30px;
-  color: #646464;
-  display: block;
-  position: absolute;
-  top: 0;
-  right: 0;
-  background: #333;
-  color: #fff;
-  padding: 0 15px;
-  border-radius: 4px;
-`;
-
-const Category = styled.span`
-  font-size: 12px;
-  font-weight: 500;
-  line-height: 16px;
-  color: #646464;
-  span {
-    font-size: 14px;
-    color: #2e2e2e;
-    display: block;
-    text-transform: capitalize;
-  }
 `;
 
 const ProdcutDetailBox = styled.div`
-  background: #fff;
+  background: #f0f0f0;
   border: 1px solid #eee;
   border-radius: 8px;
   padding: 15px;
   height: 100%;
   position: relative;
+`;
+
+const Like = styled.span`
+  width: 50px;
+  border-radius: 40px;
+  color: #000;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .heart_icon {
+    margin-right: 5px;
+  }
+`;
+
+const LikeCount = styled.span`
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 18px;
+  color: #000;
 `;

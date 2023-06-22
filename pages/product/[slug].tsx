@@ -39,18 +39,6 @@ const SingleProduct = ({ singleProductData }: Props) => {
       <Header />
       <Container>
         <ProductDetailBox>
-          <Link href={`/product/update/${id}`} className="updateProductButton">
-            Update Product
-          </Link>
-          <Link
-            href={`/product/${id}`}
-            className="deleteProductButton"
-            onClick={() => {
-              deleteProductMutate(id);
-            }}
-          >
-            Delete Product
-          </Link>
           <BreadCrumb>
             <Link href={"/"}>Home</Link>
             <Link href={`/product/${id}`}>{title}</Link>
