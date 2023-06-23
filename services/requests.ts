@@ -1,9 +1,29 @@
 import { GenericProduct, IProducts } from "./../types/globalTypes";
 import axios from "axios";
+import { BASE_URL } from "./api";
+
+const headers = {
+  "Content-Type": "application/json",
+  "Accept": "application/json",
+  "Access-Control-Allow-Origin": "*",
+  'Access-Control-Allow-Credentials': true
+}
 
 interface ISearchProduct<T> {
   products: T[];
 }
+
+const auth = {
+  login: async (params: any) => {
+    const res = await axios.post(`${BASE_URL}/account/login`, {
+      ...params
+    }, {
+      headers
+    });
+
+    return res.data;
+  },
+};
 
 const products = {
   getProducts: async (params?: any) => {
@@ -24,10 +44,9 @@ const products = {
 
   getProduct: async (param: any) => {
     const res = await axios.get(
-      `https://dummyjson.com/products/${
-        param.queryKey[1] !== "" && param.queryKey[1] !== undefined
-          ? param.queryKey[1]
-          : "1"
+      `https://dummyjson.com/products/${param.queryKey[1] !== "" && param.queryKey[1] !== undefined
+        ? param.queryKey[1]
+        : "1"
       }`
     );
     return res.data;
@@ -102,11 +121,11 @@ const products = {
 };
 
 const users = {
-  getUsers: async (params: any) => {
-    const res = await axios.get("http://localhost:5001/users");
+  getUser: async (params: any) => {
+    const res = await axios.get(`${BASE_URL}/account/login`);
 
     return res.data;
   },
 };
 
-export { products, users };
+export { auth, products, users };

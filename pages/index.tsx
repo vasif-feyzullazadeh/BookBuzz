@@ -61,8 +61,6 @@ const Home = ({ productsData }: Props) => {
   //   allProductsData
   // );
 
-  const { usersData } = useUsers();
-
   // Pagination Algoritm
   const lastPostIndex =
     isParams.skip !== null ? isCurrentPage * isParams.skip : isCurrentPage * 8;
@@ -114,7 +112,9 @@ const Home = ({ productsData }: Props) => {
       <Container>
         <Title>Browse All Books</Title>
         <Box>
-          <Row>{/* <Product products={products} /> */}</Row>
+          <Row>
+            {/* <Product products={products} /> */}
+          </Row>
         </Box>
       </Container>
       <Footer />

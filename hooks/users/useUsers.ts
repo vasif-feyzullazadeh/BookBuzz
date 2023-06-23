@@ -4,7 +4,7 @@ import { users } from "@/services/requests";
 const useUsers = () => {
   const { data: usersData, isLoading: usersIsLoading } = useQuery(
     "USERS",
-    users.getUsers
+    users.getUser
   );
 
   return {

@@ -3,8 +3,19 @@ import Container from "@/components/Tools/Container";
 import Input from "@/components/Tools/Input";
 import BG from "@/assets/images/login_bg.png";
 import Button from "@/components/Tools/Button";
+import useLogin from "@/hooks/auth/useLogin";
+import { useState } from "react";
 
 const Login = () => {
+
+  const [loginCredentials, setLoginCredentials] = useState({
+    email: "",
+    password: ""
+  })
+
+  console.log(loginCredentials)
+
+  const { loginMutate } = useLogin();
   return (
     <Wrapper>
       <Container>
@@ -16,13 +27,14 @@ const Login = () => {
           <Right>
             <Title>Log In</Title>
             <Box>
-              <Input type="text" id="email" labelName="Email" envelope />
-              <Input type="password" id="password" labelName="Password" eye />
+              <Input type="text" id="email" labelName="Email" envelope onChange={(e) => setLoginCredentials({ ...loginCredentials, email: e.target.value })} />
+              <Input type="password" id="password" labelName="Password" eye onChange={(e) => setLoginCredentials({ ...loginCredentials, password: e.target.value })} />
               <Button
                 buttonName="Log In"
                 width={"100%"}
                 align={"center"}
                 borderRadius="40px"
+                onClick={() => loginMutate(loginCredentials)}
               />
             </Box>
           </Right>
