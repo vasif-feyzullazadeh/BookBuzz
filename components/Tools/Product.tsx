@@ -1,26 +1,27 @@
 import styled from "styled-components";
 import Link from "next/link";
 import { AiFillHeart } from "react-icons/ai";
-import { GenericProduct, IProductDetails } from "@/types/globalTypes";
+import { IProducts, IGenericProduct } from "@/types/globalTypes";
 
-const Product = ({ products }: IProductDetails<GenericProduct>) => {
-  const { id, thumbnail, title, description, price } = products;
+const Product = ({ products }: IProducts<IGenericProduct>) => {
+  const { id, images, mainImage, numOfLikes, price, subtitleShort, title } =
+    products;
   return (
     <Column>
       <Link href={`/product/${id}`} className="card_link">
         <ProdcutDetailBox>
           <ImageBox>
-            <img src={thumbnail} alt={title} />
+            <img src={mainImage} alt={title} />
           </ImageBox>
           <Title>{title}</Title>
-          <Desc>{description}</Desc>
+          <Desc>{subtitleShort}</Desc>
           <Row>
             <CostBox>
               <Price>${price}</Price>
             </CostBox>
             <Like>
               <AiFillHeart color={"#000"} size={16} className="heart_icon" />
-              <LikeCount>10</LikeCount>
+              <LikeCount>{numOfLikes}</LikeCount>
             </Like>
           </Row>
         </ProdcutDetailBox>

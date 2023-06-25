@@ -2,7 +2,7 @@ import { products } from "@/services/requests";
 import { useQuery } from "react-query";
 
 const useProducts = (params?: any, initialData?: any) => {
-  const { data: productsData, isLoading: productsIsLoading } = useQuery(
+  const { data: productsDataa, isLoading: productsIsLoading } = useQuery(
     ["PRODUCTS", params ? params : ""],
     products.getProducts,
     {
@@ -11,7 +11,7 @@ const useProducts = (params?: any, initialData?: any) => {
   );
 
   return {
-    productsData,
+    productsDataa,
     productsIsLoading,
   };
 };

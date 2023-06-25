@@ -1,22 +1,33 @@
 import { auth } from "@/services/requests";
 import { useMutation } from "react-query";
+import { useRouter } from "next/router";
+import { setCookie } from "nookies";
 
 const useLogin = () => {
-    const {
-        mutate: loginMutate,
-        data: loginData,
-        isLoading: loginIsLoading,
-    } = useMutation("LOGIN", auth.login, {
-        onSuccess(data, variables, context) {
-            console.log(data);
-        },
-    });
+  const router = useRouter();
 
-    return {
-        loginMutate,
-        loginData,
-        loginIsLoading,
-    };
+  const {
+    mutate: loginMutate,
+    data: loginData,
+    isLoading: loginIsLoading,
+    error: loginError,
+  } = useMutation("LOGIN", auth.login, {
+    onSuccess: (data) => {
+      setCookie(null, "auth", data.result.jwt, {
+        maxAge: 300,
+        path: "/",
+      });
+
+      router.push({ pathname: "/" });
+    },
+  });
+
+  return {
+    loginMutate,
+    loginData,
+    loginIsLoading,
+    loginError,
+  };
 };
 
 export default useLogin;

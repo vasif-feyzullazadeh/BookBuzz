@@ -5,17 +5,21 @@ import BG from "@/assets/images/login_bg.png";
 import Button from "@/components/Tools/Button";
 import useLogin from "@/hooks/auth/useLogin";
 import { useState } from "react";
+import { useProducts } from "@/hooks/products/useProducts";
 
 const Login = () => {
-
   const [loginCredentials, setLoginCredentials] = useState({
     email: "",
-    password: ""
-  })
+    password: "",
+  });
 
-  console.log(loginCredentials)
+  const { loginMutate, loginIsLoading } = useLogin();
 
-  const { loginMutate } = useLogin();
+  const handleLogin = () => {
+    if (!loginIsLoading) {
+      loginMutate(loginCredentials);
+    }
+  };
   return (
     <Wrapper>
       <Container>
@@ -27,14 +31,36 @@ const Login = () => {
           <Right>
             <Title>Log In</Title>
             <Box>
-              <Input type="text" id="email" labelName="Email" envelope onChange={(e) => setLoginCredentials({ ...loginCredentials, email: e.target.value })} />
-              <Input type="password" id="password" labelName="Password" eye onChange={(e) => setLoginCredentials({ ...loginCredentials, password: e.target.value })} />
+              <Input
+                type="text"
+                id="email"
+                labelName="Email"
+                envelope
+                onChange={(e) =>
+                  setLoginCredentials({
+                    ...loginCredentials,
+                    email: e.target.value,
+                  })
+                }
+              />
+              <Input
+                type="password"
+                id="password"
+                labelName="Password"
+                eye
+                onChange={(e) =>
+                  setLoginCredentials({
+                    ...loginCredentials,
+                    password: e.target.value,
+                  })
+                }
+              />
               <Button
-                buttonName="Log In"
+                buttonName={!loginIsLoading ? "Log In" : "Loading..."}
                 width={"100%"}
                 align={"center"}
                 borderRadius="40px"
-                onClick={() => loginMutate(loginCredentials)}
+                onClick={handleLogin}
               />
             </Box>
           </Right>

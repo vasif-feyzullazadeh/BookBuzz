@@ -6,29 +6,30 @@ import Footer from "@/components/Tools/Footer";
 import Container from "@/components/Tools/Container";
 import { GetServerSideProps } from "next";
 import axios from "axios";
-import { GenericProduct } from "@/types/globalTypes";
+import { IGenericProduct } from "@/types/globalTypes";
 import Slider from "@/components/Tools/Slider";
 import useDeleteProduct from "@/hooks/products/useDeleteProduct";
+import { BASE_URL } from "@/services/api";
 
 interface Props {
-  singleProductData: GenericProduct;
+  singleProductData: any;
 }
 
 const SingleProduct = ({ singleProductData }: Props) => {
+  console.log(singleProductData);
   const {
     id,
     title,
+    subtitleShort,
+    subtitleLong,
+    numOfLikes,
+    authors,
+    tags,
     price,
-    discountPercentage,
-    category,
-    brand,
-    description,
+    mainImage,
     images,
-    rating,
-    stock,
-  } = singleProductData;
+  } = singleProductData.result;
 
-  const { deleteProductMutate } = useDeleteProduct();
   return (
     <Wrapper>
       <Head>
@@ -49,23 +50,11 @@ const SingleProduct = ({ singleProductData }: Props) => {
             </Left>
             <Right>
               <Title>{title}</Title>
-              <Desc>{description}</Desc>
+              <Desc>{subtitleShort}</Desc>
               <CostBox>
                 <Price>${price}</Price>
-                <DiscountPercentage>
-                  {discountPercentage} % OFF
-                </DiscountPercentage>
+                <DiscountPercentage>{numOfLikes} % OFF</DiscountPercentage>
               </CostBox>
-              <Rating>
-                Rating: <span>{rating}</span>
-              </Rating>
-              <Stock>
-                Stock: <span>{stock}</span>
-              </Stock>
-              <Brand>{brand}</Brand>
-              <Category>
-                Category: <span>{category}</span>
-              </Category>
             </Right>
           </Row>
         </ProductDetailBox>
@@ -77,34 +66,36 @@ const SingleProduct = ({ singleProductData }: Props) => {
 
 export default SingleProduct;
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const { slug } = ctx.query;
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { slug } = context.query;
+  const cookies = context.req.cookies;
+  const { auth } = cookies;
 
   try {
-    const singleProduct = await axios.get(
-      `https://dummyjson.com/products/${slug}`
+    const singleProduct = await fetch(
+      `${BASE_URL}/product/details?productId=${slug}`,
+      {
+        headers: {
+          Authorization: "Bearer " + auth,
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+      }
     );
+
+    const singleProductData = await singleProduct.json();
 
     return {
       props: {
-        singleProductData: singleProduct.data,
+        singleProductData: singleProductData,
       },
     };
   } catch (error: any) {
-    if (error.response.status === 401) {
-      return {
-        redirect: {
-          permanent: false,
-          destination: "/login",
-        },
-      };
-    } else {
-      return {
-        props: {
-          status: 500,
-        },
-      };
-    }
+    return {
+      props: {
+        status: 500,
+      },
+    };
   }
 };
 
@@ -195,55 +186,4 @@ const DiscountPercentage = styled.span`
   line-height: 30px;
   color: #d62828;
   margin-left: 10px;
-`;
-
-const Rating = styled.span`
-  font-size: 12px;
-  font-weight: 500;
-  line-height: 30px;
-  color: #2e2e2e;
-  display: block;
-
-  span {
-    font-size: 14px;
-  }
-`;
-
-const Stock = styled.span`
-  font-size: 12px;
-  font-weight: 500;
-  line-height: 30px;
-  color: #2e2e2e;
-  display: block;
-  span {
-    font-size: 14px;
-  }
-`;
-
-const Brand = styled.span`
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 30px;
-  color: #646464;
-  display: block;
-  position: absolute;
-  top: -10px;
-  right: -10px;
-  background: #333;
-  color: #fff;
-  padding: 0 15px;
-  border-radius: 4px;
-`;
-
-const Category = styled.span`
-  font-size: 12px;
-  font-weight: 500;
-  line-height: 16px;
-  color: #646464;
-  span {
-    font-size: 14px;
-    color: #2e2e2e;
-    display: block;
-    text-transform: capitalize;
-  }
 `;

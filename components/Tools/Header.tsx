@@ -1,15 +1,20 @@
+"use client";
+
 import styled from "styled-components";
 import Container from "@/components/Tools/Container";
 import { BiSearch } from "react-icons/bi";
 import Link from "next/link";
 import Button from "@/components/Tools/Button";
 import Profile from "@/assets/images/profile.jpg";
+import { parseCookies } from "nookies";
 
 interface Props {
-  userData?: any; // generic olmalidir
+  profile?: boolean;
 }
 
-const Header = ({ userData }: Props) => {
+const Header = ({ profile }: Props) => {
+  const cookies = parseCookies();
+  const { auth } = cookies;
   return (
     <Wrapper>
       <Container>
@@ -26,14 +31,19 @@ const Header = ({ userData }: Props) => {
               Cart
             </Link>
           </CartBox>
-          <Button
-            buttonName="Login"
-            className="login_btn"
-            borderRadius="10px"
-            width="100px"
-            align="center"
-            url={"/login"}
-          />
+          {auth && !auth ? (
+            <Button
+              buttonName="Login"
+              className="login_btn"
+              borderRadius="10px"
+              width="100px"
+              align="center"
+              url={"/login"}
+            />
+          ) : (
+            <></>
+          )}
+
           <Account>
             <Frame>
               <Image src={Profile.src} alt="profile" />
