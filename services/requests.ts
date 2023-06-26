@@ -55,11 +55,18 @@ const products = {
   },
 
   searchProducts: async (param: any) => {
-    const res = await axios.get("https://dummyjson.com/products/search", {
-      params: {
-        q: param.queryKey[1],
-      },
-    });
+    const res = await axios.get(
+      `${BASE_URL}/product/search?q=${param.queryKey[1]}`,
+      {
+        headers: {
+          Authorization: "Bearer " + authCookie,
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Credentials": true,
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      }
+    );
     return res.data;
   },
 

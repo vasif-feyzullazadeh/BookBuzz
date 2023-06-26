@@ -28,7 +28,7 @@ const SingleProduct = ({ singleProductData }: Props) => {
     price,
     mainImage,
     images,
-  } = singleProductData.result;
+  } = singleProductData?.result;
 
   return (
     <Wrapper>
@@ -70,6 +70,15 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const { slug } = context.query;
   const cookies = context.req.cookies;
   const { auth } = cookies;
+
+  if (!auth) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/login",
+      },
+    };
+  }
 
   try {
     const singleProduct = await fetch(

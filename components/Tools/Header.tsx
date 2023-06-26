@@ -7,14 +7,24 @@ import Link from "next/link";
 import Button from "@/components/Tools/Button";
 import Profile from "@/assets/images/profile.jpg";
 import { parseCookies } from "nookies";
+import { ChangeEvent, useCallback } from "react";
+import { debounce } from "@/helper/helper";
 
 interface Props {
+  setSearch: (params: any) => void;
   profile?: boolean;
 }
 
-const Header = ({ profile }: Props) => {
+const Header: React.FC<Props> = ({ setSearch, profile }) => {
   const cookies = parseCookies();
   const { auth } = cookies;
+
+  const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearch(e.target.value);
+  };
+
+  const optimizeFn = useCallback(debounce(handleSearchChange, 500), []);
+
   return (
     <Wrapper>
       <Container>
@@ -23,6 +33,7 @@ const Header = ({ profile }: Props) => {
             <Input
               type="text"
               placeholder="Search for books by title, author or keyword"
+              onChange={optimizeFn.bind(this)}
             />
             <BiSearch color={"#000"} size={16} className="search_icon" />
           </SearchBox>

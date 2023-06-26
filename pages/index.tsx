@@ -1,11 +1,13 @@
 import Head from "next/head";
 import styled from "styled-components";
+import { useState } from "react";
 import Header from "@/components/Tools/Header";
 import Footer from "@/components/Tools/Footer";
 import Container from "@/components/Tools/Container";
 import Product from "@/components/Tools/Product";
 import { BASE_URL } from "@/services/api";
 import { IGenericProduct, IProducts } from "@/types/globalTypes";
+import useProductSearch from "@/hooks/products/useSearchProduct";
 
 interface Props {
   productsData: {
@@ -16,6 +18,11 @@ interface Props {
 }
 
 const Home = ({ productsData }: Props) => {
+  const [search, setSearch] = useState(null);
+
+  const { searchData } = useProductSearch(search);
+
+  console.log(searchData, search, "search");
   return (
     <Wrapper>
       <Head>
@@ -23,14 +30,28 @@ const Home = ({ productsData }: Props) => {
         <meta name="description" content="Home Page" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Header />
+      <Header setSearch={setSearch} />
       <Container>
-        <Title>Browse All Books</Title>
+        <Title>
+          {search !== null && search !== ""
+            ? `search for: ${search}`
+            : "Browse All Books"}
+        </Title>
         <Box>
           <Row>
-            {productsData.result.products.map((item: any, index: number) => (
-              <Product products={item} key={index.toString()} />
-            ))}
+            {search !== null && search !== "" ? (
+              searchData?.result.products.length > 0 ? (
+                searchData.result.products.map((item: any, index: number) => (
+                  <Product products={item} key={index.toString()} />
+                ))
+              ) : (
+                <NoResult>No Result</NoResult>
+              )
+            ) : (
+              productsData.result.products.map((item: any, index: number) => (
+                <Product products={item} key={index.toString()} />
+              ))
+            )}
           </Row>
         </Box>
       </Container>
@@ -100,22 +121,6 @@ const Row = styled.div`
   margin: 0 -15px;
 `;
 
-const Column = styled.div`
-  padding: 0 15px;
-`;
-
-const Card = styled.div`
-  padding: 0 15px;
-`;
-
-// Prime React Components
-const FaqSection = styled.div`
-  padding: 100px 0;
-
-  .p-accordion-tab {
-    margin-bottom: 10px;
-    .p-accordion-header:hover .p-accordion-header-link {
-      background: red;
-    }
-  }
+const NoResult = styled.span`
+  padding: 10px 15px;
 `;
